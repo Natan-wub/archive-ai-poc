@@ -34,6 +34,18 @@ models rather than committing to a single one.
 ## Screenshots
 
 **gemma4:e2b Model image caption and handwriting transcription**
+<img width="1917" height="1137" alt="Screenshot 2026-09-03 162134" src="https://github.com/user-attachments/assets/150b3804-8c54-4185-9e14-398f5cbbfa62" />
+
+<img width="1916" height="1135" alt="Screenshot 2026-09-03 164343" src="https://github.com/user-attachments/assets/b6785576-4fcc-45b9-bd2f-50260b9f6e5c" />
+
+
+**qwen3.5:4b  Model image caption and handwriting transcription**
+<img width="1916" height="1135" alt="Screenshot 2026-09-03 164343" src="https://github.com/user-attachments/assets/7f753904-7149-4a73-a5c9-2ac13302e689" />
+
+<img width="1917" height="1078" alt="Screenshot 2026-09-03 165027" src="https://github.com/user-attachments/assets/82352420-c111-41dc-939b-c458ebff2a6d" />
+
+**Audio transcription**
+<img width="1917" height="1095" alt="Screenshot 2026-09-03 165315" src="https://github.com/user-attachments/assets/29cd45f3-3cff-4afd-a9ae-3fd9dd783f99" />
 
 ---
 

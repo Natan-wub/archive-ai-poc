@@ -1,0 +1,5 @@
+ollama
+openai-whisper
+gradio
+# NOTE: openai-whisper also needs the standalone ffmpeg program on your
+# system PATH (not a pip package) -- see README.md Phase 2.

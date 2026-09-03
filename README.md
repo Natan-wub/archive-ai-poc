@@ -36,7 +36,8 @@ models rather than committing to a single one.
 **gemma4:e2b Model image caption and handwriting transcription**
 <img width="1917" height="1137" alt="Screenshot 2026-09-03 162134" src="https://github.com/user-attachments/assets/150b3804-8c54-4185-9e14-398f5cbbfa62" />
 
-<img width="1916" height="1135" alt="Screenshot 2026-09-03 164343" src="https://github.com/user-attachments/assets/b6785576-4fcc-45b9-bd2f-50260b9f6e5c" />
+<img width="1917" height="1136" alt="Screenshot 2026-09-03 164612" src="https://github.com/user-attachments/assets/3c3d3f2e-bdae-4824-b461-e4ff323f3042" />
+
 
 
 **qwen3.5:4b  Model image caption and handwriting transcription**

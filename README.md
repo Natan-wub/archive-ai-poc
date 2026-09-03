@@ -45,7 +45,7 @@ models rather than committing to a single one.
 
 <img width="1917" height="1078" alt="Screenshot 2026-09-03 165027" src="https://github.com/user-attachments/assets/82352420-c111-41dc-939b-c458ebff2a6d" />
 
-**Audio transcription (partly inaccurate my name is NAtan Atnafu**
+**Audio transcription (partly inaccurate my name is NAtan Atnafu)**
 <img width="1917" height="1095" alt="Screenshot 2026-09-03 165315" src="https://github.com/user-attachments/assets/29cd45f3-3cff-4afd-a9ae-3fd9dd783f99" />
 
 ---

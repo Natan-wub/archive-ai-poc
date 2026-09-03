@@ -1,3 +1,4 @@
+
 # Archives AI Processing Suite — Proof of Concept
 
 ## What this is
@@ -18,10 +19,9 @@ models rather than committing to a single one.
 **Stack:** Python, Ollama (local model serving), Gemma 4 E2B & Qwen3.5-4B
 (vision-language models), OpenAI Whisper turbo (audio), Gradio (web UI).
 
-**A few real problems solved along the way, not just "it worked":**
+**A few real problems solved along the way :**
 - Gemma 4 E2B hallucinated badly on open-ended photo captioning at default
-  settings; fixed by lowering temperature and stripping interpretive
-  language from the prompt.
+  settings, opted to use Qwen 3.5-4B instead.
 - Handwriting transcription hit a degenerate repetition loop (the model
   getting stuck outputting the same token); fixed with a repeat penalty
   and a separate, task-specific temperature setting from captioning.
@@ -31,11 +31,21 @@ models rather than committing to a single one.
 
 ---
 
-## Setup — Proof of Concept
+## Screenshots
+
+**gemma4:e2b Model image caption and handwriting transcription**
+
+---
+
+---
+
+## Setup 
 
 
-**Total active time:** ~45-60 min, plus ~15-30 min of model downloads
-happening in the background. Start the downloads in Phase 1 first, then
+**Total active time:** It takes about ~45-60 min, plus ~15-30 min of model downloads
+happening in the background. 
+
+If you wanna set this up for your self start the downloads in Phase 1 first, then
 read the "How it all actually works" section while they finish.
 
 ---
@@ -60,19 +70,12 @@ ollama --version
 
 ## Phase 1 — Pull the models (15-25 min, mostly waiting)
 
-Start these now — they download in the background while you set up Python.
-
 ```bash
 ollama pull gemma4:e2b     # ~7.2 GB — vision-language model (captions + handwriting)
 ollama pull qwen3.5:4b     # ~3.4 GB — a second VLM to compare against gemma4
 ```
 
-You only strictly need one vision model to get the proof of concept
-working — pull `gemma4:e2b` first if you're tight on time, and grab
-`qwen3.5:4b` later. Comparing the two on the *same* image is exactly the
-"test alternative models" evaluation work the job posting mentions.
-
-You do **not** need to `ollama pull` anything for audio — `faster-whisper`
+You do **not** need to `ollama pull` anything for audio — `openai-whisper`
 downloads the Whisper model itself the first time you run it (Phase 3).
 
 ## Phase 2 — Python environment (5-10 min)
@@ -104,9 +107,9 @@ pick your OS/CUDA version, and run the install command it generates for you
 
 ## Phase 3 — Test each piece from the command line (10-15 min)
 
-Grab a test photo (any image works for captioning), a photo of some
-handwriting (even your own on a piece of paper, photographed), and a short
-audio clip (a voice memo is fine).
+Grab a test photo , a photo of some
+handwriting , and a short
+audio clip.
 
 ```bash
 python test_pipeline.py image path/to/photo.jpg
@@ -124,7 +127,7 @@ on top.
 python app.py
 ```
 
-Open the local URL it prints (usually `http://127.0.0.1:7860`). Pick an
+Open the local URL it prints. Pick an
 operation, upload a file, hit Run.
 
 ---
@@ -164,13 +167,14 @@ API instead of Ollama, and nothing else in the project would need to know.
 
 ---
 
-## Troubleshooting
+## Troubleshooting (these are some issues i came across)
 
 - **`ConnectionError` / nothing at localhost:11434** — Ollama isn't
   running. It usually starts automatically after install; if not, run
   `ollama serve` in a separate terminal.
-- **Out of VRAM** — switch `compute_type="float16"` to `compute_type="int8"`
-  in `ai_tools.py`, or use `gemma4:e2b` instead of a larger model.
+- **Out of VRAM** — in `ai_tools.py`, switch `whisper.load_model("turbo")`
+  to a smaller size like `"small"` or `"base"`, and prefer `gemma4:e2b`
+  over larger vision models.
 - **`ollama pull` seems stuck** — it's usually still downloading; check
   progress, it doesn't print much until it finishes a layer.
 - **CUDA not found** — run `nvidia-smi` to confirm your GPU and driver are
@@ -189,14 +193,35 @@ API instead of Ollama, and nothing else in the project would need to know.
   offending package for an alternative (as done here) is almost always
   faster.
 
-## If you finish early / want to go further
 
-- Point `caption_image()` at a real archival-style photo and see whether
-  the output reads like something a catalogue would actually store — tweak
-  the prompt until it does.
-- Run the *same* handwriting sample through both `gemma4:e2b` and
-  `qwen3.5:4b` and compare — this is literally the "testing and tuning of
-  alternative models" line from the job description.
-- Add a fourth function, `save_result()`, that writes the output into a
-  SQLite database alongside the original filename — that's the searchable
-  metadata store the JD's background section is really asking for.
+---
+
+## Conclusion
+
+This proof of concept shows that all three tasks in the project brief —
+audio transcription, handwritten document transcription, and image
+captioning — run end-to-end on local, GPU-based inference, with no data
+leaving the machine and no per-file API cost. It also surfaced findings
+that matter for the fuller build: small local models can be reliable at
+one task and unreliable at another (Gemma 4 E2B handled captioning
+reasonably but looped on handwriting until tuned), generation settings
+like temperature and repeat penalty need to be chosen per task rather than
+set once globally, and comparing models side-by-side on the same input is
+necessary rather than optional.
+
+This is a proof of concept, not a finished tool. A production build would
+add batch processing, a persistent searchable metadata store, broader
+evaluation across more model candidates on real archival material, and a
+more polished interface. The modular design here — one function per task,
+with the web UI completely decoupled from the model-calling code — means
+those are extensions to what exists, not a rewrite of it.
+
+## Acknowledgments
+
+Built by Natan Atnafu. Developed with AI-assisted pair programming using Claude
+(Anthropic) — for initial code scaffolding, debugging platform-specific
+issues (Windows Smart App Control blocking a compiled dependency, PATH
+configuration problems), and guidance on model-tuning decisions like
+temperature and repeat penalty. All setup, hands-on debugging, model
+testing, and evaluation were carried out personally, on local hardware,
+end to end.

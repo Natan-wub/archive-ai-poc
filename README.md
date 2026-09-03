@@ -1,8 +1,38 @@
 # Archives AI Processing Suite — Proof of Concept
 
-A tonight-sized build of the Queen's Archives project: local GPU inference
-for audio transcription, handwriting transcription, and image captioning,
-behind one small web UI.
+## What this is
+
+A working local-GPU pipeline for three tasks archivists need: transcribing
+audio, transcribing handwritten documents, and generating captions for
+historical images — all running entirely offline on local hardware, with
+no data ever leaving the machine.
+
+Built as a proof of concept for Queen's University Archives' proposed AI
+workstation project. It uses the exact models named in that project's
+technical brief (Ollama-served vision-language models for image/handwriting
+work, Whisper for audio) and implements the two requirements called out
+explicitly: a modular backend where any model can be swapped for a paid API
+later with no changes elsewhere in the code, and comparative testing across
+models rather than committing to a single one.
+
+**Stack:** Python, Ollama (local model serving), Gemma 4 E2B & Qwen3.5-4B
+(vision-language models), OpenAI Whisper turbo (audio), Gradio (web UI).
+
+**A few real problems solved along the way, not just "it worked":**
+- Gemma 4 E2B hallucinated badly on open-ended photo captioning at default
+  settings; fixed by lowering temperature and stripping interpretive
+  language from the prompt.
+- Handwriting transcription hit a degenerate repetition loop (the model
+  getting stuck outputting the same token); fixed with a repeat penalty
+  and a separate, task-specific temperature setting from captioning.
+- Hit a Windows 11 Smart App Control block on a compiled audio-decoding
+  dependency; resolved by swapping to a subprocess-based alternative
+  instead of disabling OS security features.
+
+---
+
+## Setup — Proof of Concept
+
 
 **Total active time:** ~45-60 min, plus ~15-30 min of model downloads
 happening in the background. Start the downloads in Phase 1 first, then
